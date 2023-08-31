@@ -164,6 +164,7 @@ actual open class BaseBundle {
      *   other deprecated APIs.
      * @hide
      */
+    @Suppress("DEPRECATION")
     @Deprecated(
         "Use getValue(String, Class, Class...). This method should only be used in " +
             "other deprecated APIs."
@@ -205,6 +206,7 @@ actual open class BaseBundle {
      *
      * @hide
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T> getValueAt(i: Int, clazz: Class<T>?, vararg itemTypes: Class<*>?): T? {
         var o = mMap.valueAt(i)
         if (o is BiFunction<*, *, *>) {
@@ -301,6 +303,7 @@ actual open class BaseBundle {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> deepcopyArrayList(from: ArrayList<T>): ArrayList<T> {
         val n = from.size
         val res = ArrayList<T>(n)
@@ -328,6 +331,7 @@ actual open class BaseBundle {
      * @deprecated Use the type-safe specific APIs depending on the type of the item to be
      *   retrieved, eg. {@link #getString(String)}.
      */
+    @Suppress("DEPRECATION")
     @Deprecated(
         "Use the type-safe specific APIs depending on the type of the item to be " +
             "retrieved, eg. getString(String)."
@@ -374,6 +378,7 @@ actual open class BaseBundle {
      *
      * @param map a Map
      */
+    @Suppress("UNCHECKED_CAST")
     open fun putAll(map: ArrayMap<out String, Any?>) {
         mMap.putAll(map as Map<String, Any?>)
     }
@@ -388,6 +393,7 @@ actual open class BaseBundle {
     }
 
     /** {@hide} */
+    @Suppress("UNCHECKED_CAST")
     open fun putObject(key: String?, value: Any?) {
         when (val v = value) {
             null -> putString(key, null)
@@ -527,7 +533,7 @@ actual open class BaseBundle {
      * @param key a String, or null
      * @param value an ArrayList<Integer> object, or null
      */
-    internal open fun putIntegerArrayList(key: String?, value: ArrayList<Integer>?) {
+    internal open fun putIntegerArrayList(key: String?, value: ArrayList<Int>?) {
         mMap.put(key, value)
     }
 
@@ -750,7 +756,7 @@ actual open class BaseBundle {
      * @return a byte value
      */
     internal open fun getByte(key: String?): Byte {
-        return getByte(key, 0 as Byte)
+        return getByte(key, 0)
     }
 
     /**
@@ -782,7 +788,7 @@ actual open class BaseBundle {
      * @return a char value
      */
     internal open fun getChar(key: String?): Char {
-        return getChar(key, 0 as Char)
+        return getChar(key, '\u0000')
     }
 
     /**
@@ -814,7 +820,7 @@ actual open class BaseBundle {
      * @return a short value
      */
     internal open fun getShort(key: String?): Short {
-        return getShort(key, 0 as Short)
+        return getShort(key, 0)
     }
 
     /**
@@ -1071,6 +1077,7 @@ actual open class BaseBundle {
         return get(key, clazz)
     }
 
+    @Suppress("UNCHECKED_CAST")
     internal open fun <T> getArrayList(key: String?, clazz: Class<out T>): ArrayList<T>? {
         try {
             return getValue(key, ArrayList::class.java, requireNonNull(clazz)) as ArrayList<T>?
@@ -1280,6 +1287,7 @@ actual open class BaseBundle {
      * @param key a String, or null
      * @return a Array<String> value, or null
      */
+    @Suppress("UNCHECKED_CAST")
     fun getStringArray(key: String?): Array<String>? {
         val o = mMap.get(key)
         if (o == null) {
@@ -1300,6 +1308,7 @@ actual open class BaseBundle {
      * @param key a String, or null
      * @return a Array<CharSequence> value, or null
      */
+    @Suppress("UNCHECKED_CAST")
     internal open fun getCharSequenceArray(key: String?): Array<CharSequence>? {
         val o = mMap.get(key)
         if (o == null) {

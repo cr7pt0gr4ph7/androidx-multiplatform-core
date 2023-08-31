@@ -146,6 +146,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /** {@hide} */
+    @Suppress("UNCHECKED_CAST")
     public override fun putObject(key: String?, value: Any?) {
         when (val v = value) {
             is Byte -> putByte(key, v)
@@ -155,7 +156,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
             is CharSequence -> putCharSequence(key, v)
             is Parcelable -> putParcelable(key, v)
             is ArrayList<*> -> putParcelableArrayList(key, v as ArrayList<out Parcelable>)
-            is List<*> -> putParcelableList(key, v as List<out Parcelable>)
+            is List<*> -> putParcelableList(key, v as List<Parcelable>)
             is Serializable -> putSerializable(key, v)
             is ByteArray -> putByteArray(key, v)
             is ShortArray -> putShortArray(key, v)
@@ -263,18 +264,18 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
 
     /** {@hide} */
     // @UnsupportedAppUsage
-    fun putParcelableList(key: String?, value: List<out Parcelable>?) {
+    fun putParcelableList(key: String?, value: List<Parcelable>?) {
         mMap.put(key, value)
     }
 
     /**
-     * Inserts an ArrayList<Integer> value into the mapping of this Bundle, replacing any existing
+     * Inserts an ArrayList<Int> value into the mapping of this Bundle, replacing any existing
      * value for the given key. Either key or value may be null.
      *
      * @param key a String, or null
-     * @param value an ArrayList<Integer> object, or null
+     * @param value an ArrayList<Int> object, or null
      */
-    public override fun putIntegerArrayList(key: String?, value: ArrayList<Integer>?) {
+    public override fun putIntegerArrayList(key: String?, value: ArrayList<Int>?) {
         super.putIntegerArrayList(key, value)
     }
 
@@ -527,7 +528,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
      * @deprecated Use the type-safer {@link #getParcelable(String, Class)} starting from Android
      *   {@link Build.VERSION_CODES#TIRAMISU}.
      */
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "UNCHECKED_CAST")
     @Deprecated("Use the typesafer getParcelable(String, Class)")
     fun <T : Parcelable> getParcelable(key: String?): T? {
         val o = getValue(key)
@@ -584,7 +585,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
      * @deprecated Use the type-safer {@link #getParcelableArray(String, Class)} starting from
      *   Android {@link Build.VERSION_CODES#TIRAMISU}.
      */
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "UNCHECKED_CAST")
     @Deprecated("Use the typesafer getParcelableArray(String, Class)")
     fun getParcelableArray(key: String?): Array<Parcelable>? {
         val o = getValue(key)
@@ -622,6 +623,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
      * @param clazz The type of the items inside the array. This is only verified when unparceling.
      * @return a Array<Parcelable> value, or {@code null}
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T> getParcelableArray(key: String?, clazz: Class<T>): Array<T>? {
         // The reason for not using <T extends Parcelable> is because the caller could provide a
         // super class to restrict the children that doesn't implement Parcelable itself while the
@@ -649,7 +651,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
      * @deprecated Use the type-safer {@link #getParcelableArrayList(String, Class)} starting from
      *   Android {@link Build.VERSION_CODES#TIRAMISU}.
      */
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "UNCHECKED_CAST")
     @Deprecated("Use the typesafer getParcelableArrayList(String, Class")
     fun <T : Parcelable> getParcelableArrayList(key: String?): ArrayList<T>? {
         val o = getValue(key)
