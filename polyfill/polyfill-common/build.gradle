@@ -39,10 +39,20 @@ androidXMultiplatform {
             }
         }
 
+        nonAndroidMain {
+            dependsOn(commonMain)
+            dependencies {
+                api(libs.kotlinStdlib)
+                api(projectOrArtifact(":annotation:annotation"))
+                api(projectOrArtifact(":collection:collection"))
+            }
+        }
+
         // Android is compiled separately, and does not reference the Common sources.
         // The classed defined in commonMain will therefore be resolved from the
         // Android SDK instead (which is the whole purpose of this package). 
         androidMain {
+            dependsOn(commonMain)
             dependencies {
                 api(libs.kotlinStdlib)
                 api(projectOrArtifact(":annotation:annotation"))
@@ -51,7 +61,7 @@ androidXMultiplatform {
         }
 
         jvmMain {
-            dependsOn(commonMain)
+            dependsOn(nonAndroidMain)
             dependencies {
                 api(libs.kotlinStdlib)
                 api(projectOrArtifact(":annotation:annotation"))
