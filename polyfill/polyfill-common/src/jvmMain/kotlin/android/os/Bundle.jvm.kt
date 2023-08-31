@@ -16,7 +16,6 @@
 
 package android.os
 
-import androidx.collection.ArrayMap
 import java.io.Serializable
 import java.util.Objects.requireNonNull
 
@@ -93,7 +92,8 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     /**
      * Changes the [ClassLoader] this [Bundle] uses when instantiating objects.
      *
-     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the Bundle.
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   Bundle.
      */
     public override fun setClassLoader(loader: ClassLoader?) {
         super.setClassLoader(loader)
@@ -150,7 +150,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     public override fun putObject(key: String?, value: Any?) {
         when (val v = value) {
             is Byte -> putByte(key, v)
-            is Char-> putChar(key, v)
+            is Char -> putChar(key, v)
             is Short -> putShort(key, v)
             is Float -> putFloat(key, v)
             is CharSequence -> putCharSequence(key, v)
@@ -269,8 +269,8 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Inserts an ArrayList<Int> value into the mapping of this Bundle, replacing any existing
-     * value for the given key. Either key or value may be null.
+     * Inserts an ArrayList<Int> value into the mapping of this Bundle, replacing any existing value
+     * for the given key. Either key or value may be null.
      *
      * @param key a String, or null
      * @param value an ArrayList<Int> object, or null
