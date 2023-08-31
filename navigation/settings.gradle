@@ -28,6 +28,7 @@ playground {
     setupPlayground("..")
     selectProjectsFromAndroidX({ name ->
         // Compose projects are not supported in playground yet
+        if (name.startsWith(":polyfill")) return true
         if (name.startsWith(":navigation")) return true
         if (name.startsWith(":annotation")) return true
         if (name == ":compose:integration-tests:demos:common") return true

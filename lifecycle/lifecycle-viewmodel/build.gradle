@@ -15,13 +15,70 @@
  */
 
 
+import androidx.build.PlatformIdentifier
 import androidx.build.Publish
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("AndroidXPlugin")
     id("com.android.library")
-    id("kotlin-android")
+}
+
+androidXMultiplatform {
+    android()
+    jvm()
+
+    defaultPlatform(PlatformIdentifier.JVM)
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api("androidx.annotation:annotation:1.1.0")
+                api(libs.kotlinStdlib)
+            }
+        }
+
+        nonAndroidMain {
+            dependsOn(commonMain)
+            kotlin {
+                srcDir "main/java"
+
+                // Exclude classes and files that are specific to Android
+                // exclude "androidx/lifecycle/AndroidViewModel.kt"
+                exclude "androidx/lifecycle/ViewTreeViewModel.kt"
+                exclude "androidx/lifecycle/ViewTreeViewModelStoreOwner.kt"
+            }
+            dependencies {
+                api("androidx.annotation:annotation:1.1.0")
+                projectOrArtifact(":polyfill:polyfill-common")
+                api(libs.kotlinStdlib)
+            }
+        }
+
+        androidMain {
+            dependsOn(commonMain)
+        }
+
+        test {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.mockitoCore4)
+                implementation(libs.truth)
+            }
+        }
+
+        androidTest {
+            dependencies {
+                implementation("androidx.core:core-ktx:1.2.0")
+                implementation(libs.truth)
+                implementation(libs.kotlinStdlib)
+                implementation(libs.junit)
+                implementation(libs.testExtJunit)
+                implementation(libs.testCore)
+                implementation(libs.testRunner)
+            }
+        }
+    }
 }
 
 android {
@@ -29,22 +86,6 @@ android {
         consumerProguardFiles "proguard-rules.pro"
     }
     namespace "androidx.lifecycle.viewmodel"
-}
-
-dependencies {
-    api("androidx.annotation:annotation:1.1.0")
-    api(libs.kotlinStdlib)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockitoCore4)
-    testImplementation(libs.truth)
-
-    androidTestImplementation("androidx.core:core-ktx:1.2.0")
-    androidTestImplementation(libs.truth)
-    androidTestImplementation(libs.kotlinStdlib)
-    androidTestImplementation(libs.junit)
-    androidTestImplementation(libs.testExtJunit)
-    androidTestImplementation(libs.testCore)
-    androidTestImplementation(libs.testRunner)
 }
 
 androidx {
