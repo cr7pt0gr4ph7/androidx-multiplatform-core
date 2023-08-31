@@ -105,6 +105,7 @@ object Log {
      * Checks to see whether or not a log for the specified tag is loggable at the specified level.
      */
     @JvmStatic
+    @Suppress("UNUSED_PARAMETER")
     fun isLoggable(tag: String?, level: Int): Boolean {
         return level >= MIN_LOG_LEVEL
     }
@@ -117,6 +118,7 @@ object Log {
 
     /** Low-level logging call. */
     @JvmStatic
+    @Suppress("UNUSED_PARAMETER")
     private fun printlnImpl(priority: Int, tag: String?, msg: String?, tr: Throwable? = null): Int {
         if (isLoggable(tag, priority)) {
             ktPrintln("[$tag] $msg")
