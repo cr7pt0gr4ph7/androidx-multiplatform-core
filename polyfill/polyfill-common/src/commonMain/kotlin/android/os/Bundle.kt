@@ -15,7 +15,5 @@
  */
 package android.os
 
-/**
- * A mapping from String keys to various [Parcelable] values.
- */
+/** A mapping from String keys to various [Parcelable] values. */
 expect final class Bundle : BaseBundle, Cloneable, Parcelable
