@@ -41,7 +41,7 @@ androidXMultiplatform {
         nonAndroidMain {
             dependsOn(commonMain)
             kotlin {
-                srcDir "main/java"
+                srcDir "src/main/java"
 
                 // Exclude classes and files that are specific to Android
                 // exclude "androidx/lifecycle/AndroidViewModel.kt"
@@ -49,10 +49,12 @@ androidXMultiplatform {
                 exclude "androidx/lifecycle/ViewTreeViewModelStoreOwner.kt"
             }
             dependencies {
-                api("androidx.annotation:annotation:1.1.0")
-                projectOrArtifact(":polyfill:polyfill-common")
-                api(libs.kotlinStdlib)
+                api(projectOrArtifact(":polyfill:polyfill-common"))
             }
+        }
+
+        jvmMain {
+            dependsOn(nonAndroidMain)
         }
 
         androidMain {
