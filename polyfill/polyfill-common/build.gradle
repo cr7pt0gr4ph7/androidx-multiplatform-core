@@ -31,42 +31,24 @@ androidXMultiplatform {
     defaultPlatform(PlatformIdentifier.JVM)
 
     sourceSets {
-        commmonMain {
-            dependencies {
-                api(libs.kotlinStdlib)
-                api(projectOrArtifact(":annotation:annotation"))
-                api(projectOrArtifact(":collection:collection"))
-            }
-        }
+        // Android is compiled separately, and does not reference the nonAndroid common sources.
+        // The classed defined in nonAndroidMain will therefore be resolved from the
+        // Android SDK instead (which is the whole purpose of this package).
 
         nonAndroidMain {
             dependsOn(commonMain)
-            dependencies {
-                api(libs.kotlinStdlib)
-                api(projectOrArtifact(":annotation:annotation"))
-                api(projectOrArtifact(":collection:collection"))
+            kotlin {
+                srcDir "src/nonAndroidMain/kotlin"
             }
-        }
-
-        // Android is compiled separately, and does not reference the Common sources.
-        // The classed defined in commonMain will therefore be resolved from the
-        // Android SDK instead (which is the whole purpose of this package). 
-        androidMain {
-            dependsOn(commonMain)
             dependencies {
                 api(libs.kotlinStdlib)
-                api(projectOrArtifact(":annotation:annotation"))
+                api("androidx.annotation:annotation:1.1.0")
                 api(projectOrArtifact(":collection:collection"))
             }
         }
 
         jvmMain {
             dependsOn(nonAndroidMain)
-            dependencies {
-                api(libs.kotlinStdlib)
-                api(projectOrArtifact(":annotation:annotation"))
-                api(projectOrArtifact(":collection:collection"))
-            }
         }
     }
 }
@@ -80,4 +62,51 @@ androidx {
     publish = Publish.SNAPSHOT_AND_RELEASE
     inceptionYear = "2023"
     description = "Polyfills for non-Android platforms"
+}
+
+
+var p = project
+
+task compilations {
+    doLast {
+        println("!!!")
+        println("== Source sets ==")
+        p.kotlin.sourceSets.all { sourceSet ->
+            println(sourceSet)
+            println("  source directories:")
+            sourceSet.kotlin.srcDirs.each { srcDir ->
+                println("    " + srcDir)
+            }
+            println("  depends on:")
+            sourceSet.dependsOn.each { otherSourceSet ->
+                println("    " + otherSourceSet)
+            }
+        }
+        println("== Targets ==")
+        project.kotlin.targets.all { target ->
+            println(target)
+            target.compilations.all { compilation ->
+                println("  " + compilation)
+                println("    " + compilation.defaultSourceSet)
+                println("      " + compilation.defaultSourceSet.kotlin)
+                println("        source directories:")
+                compilation.defaultSourceSet.kotlin.srcDirs.each { srcDir ->
+                    println("          " + srcDir)
+                }
+                println("        depends on:")
+                compilation.defaultSourceSet.dependsOn.each { otherSourceSet ->
+                    println("          " + otherSourceSet)
+                }
+                println("        dependency files:")
+                try {
+                    compilation.compileDependencyFiles.each { dependencyFile ->
+                        println("          " + dependencyFile)
+                    }
+                } catch(Exception e) {
+                    println("              Resolution failed.")
+                }
+            }
+        }
+        println("???")
+    }
 }
