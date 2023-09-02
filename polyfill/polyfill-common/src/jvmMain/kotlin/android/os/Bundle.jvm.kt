@@ -20,14 +20,14 @@ import java.io.Serializable
 import java.util.Objects.requireNonNull
 
 /**
- * A mapping from key: Strings to various {@link Parcelable} values.
+ * A mapping String keys to various [Parcelable] values.
  *
- * <p><b>Warning:</b> Note that {@link Bundle} is a lazy container and as such it does NOT implement
- * {@link #equals(Object)} or {@link #hashCode()}.
+ * **Warning:** Note that [Bundle] is a lazy container and as such it does NOT implement [equals] or
+ * [hashCode].
  *
  * @see PersistableBundle
  */
-actual class Bundle : BaseBundle, Cloneable, Parcelable {
+actual final class Bundle : BaseBundle, Cloneable, Parcelable {
     companion object {
         // /** An unmodifiable {@code Bundle} that is always {@link #isEmpty() empty}. */
         // val EMPTY = Bundle().apply { mMap = ArrayMap.EMPTY }
@@ -52,11 +52,11 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
         }
     }
 
-    /** Constructs a new, empty Bundle. */
-    constructor() : super() {}
+    /** Constructs a new, empty [Bundle]. */
+    actual constructor() : super() {}
 
     /**
-     * Constructs a {@link Bundle} containing a copy of {@code from}.
+     * Constructs a [Bundle] containing a copy of [from].
      *
      * @param from The bundle to be copied.
      * @param deep Whether is a deep or shallow copy.
@@ -114,7 +114,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
 
     /**
      * Make a deep copy of the given bundle. Traverses into inner containers and copies them as
-     * well, so they are not shared across bundles. Will traverse in to {@link Bundle}, {@link
+     * well, so they are not shared across bundles. Will traverse in to [Bundle], {@link
      * PersistableBundle}, {@link ArrayList}, and all types of primitive arrays. Other types of
      * objects (such as Parcelable or Serializable) are referenced as-is and not copied in any way.
      */
@@ -516,20 +516,21 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if no mapping of the desired
-     * type exists for the given key or a {@code null} value is explicitly associated with the key.
+     * Returns the value associated with the given key, or `null` if no mapping of the desired type
+     * exists for the given key or a `null` value is explicitly associated with the key.
      *
-     * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
-     * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * **Note:** if the expected value is not a class provided by the Android platform, you must
+     * call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * @param key a String, or {@code null}
-     * @return a Parcelable value, or {@code null}
-     * @deprecated Use the type-safer {@link #getParcelable(String, Class)} starting from Android
-     *   {@link Build.VERSION_CODES#TIRAMISU}.
+     * @param key a String, or `null`
+     * @return a Parcelable value, or `null`
      */
     @Suppress("DEPRECATION", "UNCHECKED_CAST")
-    @Deprecated("Use the typesafer getParcelable(String, Class)")
+    @Deprecated(
+        "Use the typesafer getParcelable(String, Class) starting from Android " +
+            "Build.VERSION_CODES.TIRAMISU."
+    )
     fun <T : Parcelable> getParcelable(key: String?): T? {
         val o = getValue(key)
         if (o == null) {
@@ -544,26 +545,26 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key or {@code null} if:
+     * Returns the value associated with the given key or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
      * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
      * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * <p><b>Warning: </b> the class that implements {@link Parcelable} has to be the immediately
+     * <p><b>Warning: </b> the class that implements [Parcelable] has to be the immediately
      * enclosing class of the runtime type of its CREATOR field (that is, {@link
      * Class#getEnclosingClass()} has to return the parcelable implementing class), otherwise this
      * method might throw an exception. If the Parcelable class does not enclose the CREATOR, use
      * the deprecated {@link #getParcelable(String)} instead.
      *
-     * @param key a String, or {@code null}
+     * @param key a String, or `null`
      * @param clazz The type of the object expected
-     * @return a Parcelable value, or {@code null}
+     * @return a Parcelable value, or `null`
      */
     fun <T> getParcelable(key: String?, clazz: Class<T>): T? {
         // The reason for not using <T extends Parcelable> is because the caller could provide a
@@ -573,20 +574,21 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if no mapping of the desired
-     * type exists for the given key or a null value is explicitly associated with the key.
+     * Returns the value associated with the given key, or `null` if no mapping of the desired type
+     * exists for the given key or a null value is explicitly associated with the key.
      *
      * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
      * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * @param key a String, or {@code null}
-     * @return a Array<Parcelable> value, or {@code null}
-     * @deprecated Use the type-safer {@link #getParcelableArray(String, Class)} starting from
-     *   Android {@link Build.VERSION_CODES#TIRAMISU}.
+     * @param key a String, or `null`
+     * @return a Array<Parcelable> value, or `null`
      */
     @Suppress("DEPRECATION", "UNCHECKED_CAST")
-    @Deprecated("Use the typesafer getParcelableArray(String, Class)")
+    @Deprecated(
+        "Use the typesafer getParcelableArray(String, Class) starting from Android " +
+            "Build.VERSION_CODES.TIRAMISU."
+    )
     fun getParcelableArray(key: String?): Array<Parcelable>? {
         val o = getValue(key)
         if (o == null) {
@@ -601,27 +603,27 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if:
+     * Returns the value associated with the given key, or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
      * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
      * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * <p><b>Warning: </b> if the list contains items implementing the {@link Parcelable} interface,
-     * the class that implements {@link Parcelable} has to be the immediately enclosing class of the
-     * runtime type of its CREATOR field (that is, {@link Class#getEnclosingClass()} has to return
-     * the parcelable implementing class), otherwise this method might throw an exception. If the
+     * <p><b>Warning: </b> if the list contains items implementing the [Parcelable] interface, the
+     * class that implements [Parcelable] has to be the immediately enclosing class of the runtime
+     * type of its CREATOR field (that is, {@link Class#getEnclosingClass()} has to return the
+     * parcelable implementing class), otherwise this method might throw an exception. If the
      * Parcelable class does not enclose the CREATOR, use the deprecated
      * {@link #getParcelableArray(String)} instead.
      *
-     * @param key a String, or {@code null}
+     * @param key a String, or `null`
      * @param clazz The type of the items inside the array. This is only verified when unparceling.
-     * @return a Array<Parcelable> value, or {@code null}
+     * @return a Array<Parcelable> value, or `null`
      */
     @Suppress("UNCHECKED_CAST")
     fun <T> getParcelableArray(key: String?, clazz: Class<T>): Array<T>? {
@@ -639,20 +641,21 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if no mapping of the desired
-     * type exists for the given key or a {@code null} value is explicitly associated with the key.
+     * Returns the value associated with the given key, or `null` if no mapping of the desired type
+     * exists for the given key or a `null` value is explicitly associated with the key.
      *
      * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
      * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * @param key a String, or {@code null}
-     * @return an ArrayList<T> value, or {@code null}
-     * @deprecated Use the type-safer {@link #getParcelableArrayList(String, Class)} starting from
-     *   Android {@link Build.VERSION_CODES#TIRAMISU}.
+     * @param key a String, or `null`
+     * @return an ArrayList<T> value, or `null`
      */
     @Suppress("DEPRECATION", "UNCHECKED_CAST")
-    @Deprecated("Use the typesafer getParcelableArrayList(String, Class")
+    @Deprecated(
+        "Use the typesafer getParcelableArrayList(String, Class) starting from " +
+            "Android Build.VERSION_CODES.TIRAMISU."
+    )
     fun <T : Parcelable> getParcelableArrayList(key: String?): ArrayList<T>? {
         val o = getValue(key)
         if (o == null) {
@@ -667,28 +670,28 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if:
+     * Returns the value associated with the given key, or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
      * <p><b>Note: </b> if the expected value is not a class provided by the Android platform, you
      * must call {@link #setClassLoader(ClassLoader)} with the proper {@link ClassLoader} first.
-     * Otherwise, this method might throw an exception or return {@code null}.
+     * Otherwise, this method might throw an exception or return `null`.
      *
-     * <p><b>Warning: </b> if the list contains items implementing the {@link Parcelable} interface,
-     * the class that implements {@link Parcelable} has to be the immediately enclosing class of the
-     * runtime type of its CREATOR field (that is, {@link Class#getEnclosingClass()} has to return
-     * the parcelable implementing class), otherwise this method might throw an exception. If the
+     * <p><b>Warning: </b> if the list contains items implementing the [Parcelable] interface, the
+     * class that implements [Parcelable] has to be the immediately enclosing class of the runtime
+     * type of its CREATOR field (that is, {@link Class#getEnclosingClass()} has to return the
+     * parcelable implementing class), otherwise this method might throw an exception. If the
      * Parcelable class does not enclose the CREATOR, use the deprecated
      * {@link #getParcelableArrayList(String)} instead.
      *
-     * @param key a String, or {@code null}
+     * @param key a String, or `null`
      * @param clazz The type of the items inside the array list. This is only verified when
      *   unparceling.
-     * @return an ArrayList<T> value, or {@code null}
+     * @return an ArrayList<T> value, or `null`
      */
     fun <T> getParcelableArrayList(key: String?, clazz: Class<out T>): ArrayList<T>? {
         // The reason for not using <T extends Parcelable> is because the caller could provide a
@@ -703,21 +706,22 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
      *
      * @param key a String, or null
      * @return a Serializable value, or null
-     * @deprecated Use the type-safer {@link #getSerializable(String, Class)} starting from Android
-     *   {@link Build.VERSION_CODES#TIRAMISU}.
      */
     @Suppress("DEPRECATION")
-    @Deprecated("Use the typesafer getSeriablizable(String, Class)")
+    @Deprecated(
+        "Use the typesafer getSeriablizable(String, Class) starting from Android " +
+            "Build.VERSION_CODES.TIRAMISU."
+    )
     override fun getSerializable(key: String?): Serializable? {
         return super.getSerializable(key)
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if:
+     * Returns the value associated with the given key, or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
      * @param key a String, or null
@@ -818,7 +822,7 @@ actual class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns a string representation of the {@link Bundle} that may be suitable for debugging. It
+     * Returns a string representation of the [Bundle] that may be suitable for debugging. It
      * won't print the internal map if its content hasn't been unparcelled.
      */
     override fun toString(): String {

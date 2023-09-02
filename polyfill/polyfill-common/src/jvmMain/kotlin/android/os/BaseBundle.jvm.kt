@@ -24,7 +24,7 @@ import java.util.function.BiFunction
 
 /**
  * A mapping from String keys to values of various types. In most cases, you should work directly
- * with either the {@link Bundle} or {@link PersistableBundle} subclass.
+ * with either the [Bundle] or [PersistableBundle] subclass.
  */
 actual open class BaseBundle {
     companion object {
@@ -33,13 +33,12 @@ actual open class BaseBundle {
         private const val DEBUG = false
 
         /**
-         * Does a loose equality check between two given {@link BaseBundle} objects. Returns {@code
-         * true} if both are {@code null}, or if both are equal as per
-         * {@link #kindofEquals(BaseBundle)}
+         * Does a loose equality check between two given [BaseBundle] objects. Returns `true` if
+         * both are `null`, or if both are equal as per {@link #kindofEquals(BaseBundle)}.
          *
-         * @param a A {@link BaseBundle} object
-         * @param b Another {@link BaseBundle} to compare with a
-         * @return {@code true} if both are the same, {@code false} otherwise
+         * @param a A [BaseBundle] object
+         * @param b Another [BaseBundle] to compare with a
+         * @return `true` if both are the same, `false` otherwise
          * @see #kindofEquals(BaseBundle)
          * @hide
          */
@@ -54,10 +53,11 @@ actual open class BaseBundle {
     private var mClassLoader: ClassLoader? = null
 
     /**
-     * Constructs a new, empty Bundle that uses a specific ClassLoader for instantiating Parcelable
-     * and Serializable objects.
+     * Constructs a new, empty Bundle that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
      *
-     * @param loader An explicit ClassLoader to use when instantiating objects inside of the Bundle.
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
      * @param capacity Initial size of the ArrayMap.
      */
     constructor(loader: ClassLoader?, capacity: Int) {
@@ -92,7 +92,7 @@ actual open class BaseBundle {
     constructor(b: BaseBundle) : this(b, deep = false) {}
 
     /**
-     * Constructs a {@link BaseBundle} containing a copy of {@code from}.
+     * Constructs a [BaseBundle] containing a copy of {@code from}.
      *
      * @param from The bundle to be copied.
      * @param deep Whether is a deep or shallow copy.
@@ -155,10 +155,10 @@ actual open class BaseBundle {
     }
 
     /**
-     * Returns the value for key {@code key}.
+     * Returns the value for key [key].
      *
      * This call should always be made after {@link #unparcel()} or inside a lock after making sure
-     * {@code mMap} is not null.
+     * [mMap] is not null.
      *
      * @deprecated Use {@link #getValue(String, Class, Class[])}. This method should only be used in
      *   other deprecated APIs.
@@ -180,13 +180,13 @@ actual open class BaseBundle {
     }
 
     /**
-     * Returns the value for key {@code key} for expected return type {@code clazz} (or pass {@code
-     * null} for no type check).
+     * Returns the value for key [key] for expected return type [clazz] (or pass `null` for no type
+     * check).
      *
-     * For {@code itemTypes}, see {@link Parcel#readValue(int, ClassLoader, Class, Class[])}.
+     * For [itemTypes], see {@link Parcel#readValue(int, ClassLoader, Class, Class[])}.
      *
      * This call should always be made after {@link #unparcel()} or inside a lock after making sure
-     * {@code mMap} is not null.
+     * [mMap] is not null.
      *
      * @hide
      */
@@ -196,13 +196,13 @@ actual open class BaseBundle {
     }
 
     /**
-     * Returns the value for a certain position in the array map for expected return type {@code
-     * clazz} (or pass {@code null} for no type check).
+     * Returns the value for a certain position in the array map for expected return type [clazz]
+     * (or pass `null` for no type check).
      *
-     * For {@code itemTypes}, see {@link Parcel#readValue(int, ClassLoader, Class, Class[])}.
+     * For [itemTypes], see {@link Parcel#readValue(int, ClassLoader, Class, Class[])}.
      *
      * This call should always be made after {@link #unparcel()} or inside a lock after making sure
-     * {@code mMap} is not null.
+     * [mMap] is not null.
      *
      * @hide
      */
@@ -219,9 +219,9 @@ actual open class BaseBundle {
     /**
      * Returns the backing map of this bundle after deserializing every item.
      *
-     * <p><b>Warning:</b> This method will deserialize every item on the bundle, including custom
-     * types such as {@link Parcelable} and {@link Serializable}, so only use this when you trust
-     * the source. Specifically don't use this method on app-provided bundles.
+     * **Warning:** This method will deserialize every item on the bundle, including custom types
+     * such as [Parcelable] and [Serializable], so only use this when you trust the source.
+     * Specifically don't use this method on app-provided bundles.
      *
      * @hide
      */
@@ -341,14 +341,14 @@ actual open class BaseBundle {
     }
 
     /**
-     * Returns the object of type {@code clazz} for the given {@code key}, or {@code null} if:
+     * Returns the object of type [clazz] for the given [key], or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
-     * <p>Use the more specific APIs where possible, especially in the case of containers such as
+     * Use the more specific APIs where possible, especially in the case of containers such as
      * lists, since those APIs allow you to specify the type of the items.
      *
      * @param key key: String
@@ -1062,11 +1062,11 @@ actual open class BaseBundle {
     }
 
     /**
-     * Returns the value associated with the given key, or {@code null} if:
+     * Returns the value associated with the given key, or `null` if:
      * <ul>
      * <li>No mapping of the desired type exists for the given key.
-     * <li>A {@code null} value is explicitly associated with the key.
-     * <li>The object is not of type {@code clazz}.
+     * <li>A `null` value is explicitly associated with the key.
+     * <li>The object is not of type [clazz].
      * </ul>
      *
      * @param key a String, or null

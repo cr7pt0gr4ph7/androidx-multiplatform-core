@@ -16,4 +16,9 @@
 package android.os
 
 /** A mapping from String keys to various [Parcelable] values. */
-expect final class Bundle : BaseBundle, Cloneable, Parcelable
+expect final class Bundle : BaseBundle, Cloneable, Parcelable {
+    /** Constructs a new, empty [Bundle]. */
+    constructor()
+
+    constructor(from: Bundle, deep: Boolean)
+}
