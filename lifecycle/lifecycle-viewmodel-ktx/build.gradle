@@ -15,12 +15,12 @@
  */
 
 
+import androidx.build.PlatformIdentifier
 import androidx.build.Publish
 
 plugins {
     id("AndroidXPlugin")
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
 }
 
 dependencies {
@@ -32,6 +32,40 @@ dependencies {
     androidTestImplementation(libs.testExtJunit)
     androidTestImplementation(libs.testCore)
     androidTestImplementation(libs.testRunner)
+}
+
+androidXMultiplatform {
+    android()
+    jvm()
+
+    defaultPlatform(PlatformIdentifier.JVM)
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(project(":lifecycle:lifecycle-viewmodel"))
+                api(libs.kotlinStdlib)
+                api(libs.kotlinCoroutinesCore)
+            }
+        }
+
+        androidMain {
+            dependencies {
+                api(libs.kotlinCoroutinesAndroid)
+            }
+        }
+
+        nonAndroidMain {
+            dependsOn(commonMain)
+            kotlin {
+                srcDir "src/main/java"
+            }
+        }
+
+        jvmMain {
+            dependsOn(nonAndroidMain)
+        }
+    }
 }
 
 androidx {
