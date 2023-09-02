@@ -15,4 +15,4 @@
  */
 package android.app
 
-public expect class Application
+expect open class Application

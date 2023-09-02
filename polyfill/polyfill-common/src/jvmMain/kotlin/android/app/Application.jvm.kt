@@ -15,4 +15,4 @@
  */
 package android.app
 
-public actual class Application
+actual open class Application
