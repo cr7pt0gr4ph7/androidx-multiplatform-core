@@ -195,7 +195,8 @@ public abstract class ViewModel {
      * it implements [Closeable]. The same object may receive multiple close calls, so method
      * should be idempotent.
      */
-    internal open fun <T> setTagIfAbsent(key: String, newValue: T): T {
+    @Suppress("UNCHECKED_CAST")
+    open fun <T> setTagIfAbsent(key: String, newValue: T): T {
         var previous: T
         synchronized(mBagOfTags!!) {
             previous = mBagOfTags.get(key) as T
@@ -216,7 +217,8 @@ public abstract class ViewModel {
     /**
      * Returns the tag associated with this viewmodel and the specified key.
      */
-    internal open fun <T> getTag(key: String): T? {
+    @Suppress("UNCHECKED_CAST")
+    open fun <T> getTag(key: String): T? {
         if (mBagOfTags == null) {
             return null
         }
@@ -228,7 +230,7 @@ public abstract class ViewModel {
     private fun closeWithRuntimeException(obj: Any) {
         if (obj is Closeable) {
             try {
-                (obj as Closeable).close()
+                obj.close()
             } catch (e: IOException) {
                 throw RuntimeException(e)
             }
