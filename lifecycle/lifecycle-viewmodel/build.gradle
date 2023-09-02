@@ -44,7 +44,6 @@ androidXMultiplatform {
                 srcDir "src/main/java"
 
                 // Exclude classes and files that are specific to Android
-                // exclude "androidx/lifecycle/AndroidViewModel.kt"
                 exclude "androidx/lifecycle/ViewTreeViewModel.kt"
                 exclude "androidx/lifecycle/ViewTreeViewModelStoreOwner.kt"
             }
