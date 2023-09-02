@@ -751,7 +751,7 @@ actual final class Bundle : BaseBundle, Cloneable, Parcelable {
      * @param key a String, or null
      * @return an ArrayList<String> value, or null
      */
-    override fun getStringArrayList(key: String?): ArrayList<String>? {
+    public override fun getStringArrayList(key: String?): ArrayList<String>? {
         return super.getStringArrayList(key)
     }
 
