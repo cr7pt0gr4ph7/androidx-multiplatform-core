@@ -20,5 +20,38 @@ expect final class Bundle : BaseBundle, Cloneable, Parcelable {
     /** Constructs a new, empty [Bundle]. */
     constructor()
 
+    /**
+     * Constructs a [Bundle] containing a copy of [from].
+     *
+     * @param from The bundle to be copied.
+     * @param deep Whether is a deep or shallow copy.
+     * @hide
+     */
     constructor(from: Bundle, deep: Boolean)
+
+    /**
+     * Constructs a new, empty [Bundle] sized to hold the given number of elements. The Bundle will
+     * grow as needed.
+     *
+     * @param capacity the initial capacity of the bundle.
+     */
+    constructor(capacity: Int)
+
+    /**
+     * Constructs a [Bundle] containing a copy of the mappings from the given Bundle. Does only a
+     * shallow copy of the original Bundle -- see [deepCopy] if that is not what you want.
+     *
+     * @param b a bundle to be copied.
+     * @see deepCopy
+     */
+    constructor(b: Bundle)
+
+    /**
+     * Constructs a new, empty [Bundle] that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     */
+    constructor(loader: ClassLoader)
 }

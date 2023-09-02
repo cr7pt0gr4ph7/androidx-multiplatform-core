@@ -52,53 +52,32 @@ actual open class BaseBundle {
     /** The ClassLoader used unparcelling data from mParcelledData. */
     private var mClassLoader: ClassLoader? = null
 
-    /**
-     * Constructs a new, empty Bundle that uses a specific [ClassLoader] for instantiating
-     * [Parcelable] and [Serializable] objects.
-     *
-     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
-     *   [Bundle].
-     * @param capacity Initial size of the ArrayMap.
-     */
-    constructor(loader: ClassLoader?, capacity: Int) {
-        mMap = if (capacity > 0) ArrayMap<String, Any?>(capacity) else ArrayMap<String, Any?>()
-        mClassLoader = if (loader == null) this::class.java.classLoader else loader
-    }
-
     /** Constructs a new, empty Bundle. */
-    constructor() : this(null as ClassLoader?, 0) {}
+    actual constructor() : this(null as ClassLoader?, 0) {}
 
     /**
-     * Constructs a new, empty Bundle that uses a specific ClassLoader for instantiating Parcelable
-     * and Serializable objects.
+     * Constructs a new, empty [Bundle] sized to hold the given number of elements. The [Bundle]
+     * will grow as needed.
      *
-     * @param loader An explicit ClassLoader to use when instantiating objects inside of the Bundle.
+     * @param capacity the initial capacity of the bundle.
      */
-    constructor(loader: ClassLoader?) : this(loader, 0) {}
+    actual constructor(capacity: Int) : this(null as ClassLoader?, capacity) {}
 
     /**
-     * Constructs a new, empty Bundle sized to hold the given number of elements. The Bundle will
-     * grow as needed.
+     * Constructs a [Bundle] containing a copy of the mappings from the given [Bundle].
      *
-     * @param capacity the initial capacity of the Bundle
+     * @param b the bundle to be copied.
      */
-    constructor(capacity: Int) : this(null as ClassLoader?, capacity) {}
+    actual constructor(b: BaseBundle) : this(b, deep = false) {}
 
     /**
-     * Constructs a Bundle containing a copy of the mappings from the given Bundle.
-     *
-     * @param b a Bundle to be copied.
-     */
-    constructor(b: BaseBundle) : this(b, deep = false) {}
-
-    /**
-     * Constructs a [BaseBundle] containing a copy of {@code from}.
+     * Constructs a [BaseBundle] containing a copy of [from].
      *
      * @param from The bundle to be copied.
-     * @param deep Whether is a deep or shallow copy.
+     * @param deep Whether to perform a deep or shallow copy.
      * @hide
      */
-    constructor(from: BaseBundle, deep: Boolean) {
+    actual constructor(from: BaseBundle, deep: Boolean) {
         synchronized(from) {
             mClassLoader = from.mClassLoader
 
@@ -113,6 +92,28 @@ actual open class BaseBundle {
                 }
             }
         }
+    }
+
+    /**
+     * Constructs a new, empty [Bundle] that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     */
+    actual constructor(loader: ClassLoader?) : this(loader, 0) {}
+
+    /**
+     * Constructs a new, empty Bundle that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     * @param capacity The initial capacity of the bundle.
+     */
+    actual constructor(loader: ClassLoader?, capacity: Int) {
+        mMap = if (capacity > 0) ArrayMap<String, Any?>(capacity) else ArrayMap<String, Any?>()
+        mClassLoader = if (loader == null) this::class.java.classLoader else loader
     }
 
     /**

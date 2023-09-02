@@ -62,32 +62,33 @@ actual final class Bundle : BaseBundle, Cloneable, Parcelable {
      * @param deep Whether is a deep or shallow copy.
      * @hide
      */
-    constructor(from: Bundle, deep: Boolean) : super(from, deep) {}
+    actual constructor(from: Bundle, deep: Boolean) : super(from, deep) {}
 
     /**
-     * Constructs a new, empty Bundle that uses a specific ClassLoader for instantiating Parcelable
-     * and Serializable objects.
-     *
-     * @param loader An explicit ClassLoader to use when instantiating objects inside of the Bundle.
-     */
-    constructor(loader: ClassLoader) : super(loader) {}
-
-    /**
-     * Constructs a new, empty Bundle sized to hold the given number of elements. The Bundle will
+     * Constructs a new, empty [Bundle] sized to hold the given number of elements. The Bundle will
      * grow as needed.
      *
-     * @param capacity the initial capacity of the Bundle
+     * @param capacity the initial capacity of the bundle.
      */
-    constructor(capacity: Int) : super(capacity) {}
+    actual constructor(capacity: Int) : super(capacity) {}
 
     /**
      * Constructs a [Bundle] containing a copy of the mappings from the given Bundle. Does only a
-     * shallow copy of the original Bundle -- see {@link #deepCopy()} if that is not what you want.
+     * shallow copy of the original Bundle -- see [deepCopy] if that is not what you want.
      *
-     * @param b a Bundle to be copied.
-     * @see #deepCopy()
+     * @param b a bundle to be copied.
+     * @see deepCopy
      */
-    constructor(b: Bundle) : super(b) {}
+    actual constructor(b: Bundle) : super(b) {}
+
+    /**
+     * Constructs a new, empty [Bundle] that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     */
+    actual constructor(loader: ClassLoader) : super(loader) {}
 
     /**
      * Changes the [ClassLoader] this [Bundle] uses when instantiating objects.
@@ -822,8 +823,8 @@ actual final class Bundle : BaseBundle, Cloneable, Parcelable {
     }
 
     /**
-     * Returns a string representation of the [Bundle] that may be suitable for debugging. It
-     * won't print the internal map if its content hasn't been unparcelled.
+     * Returns a string representation of the [Bundle] that may be suitable for debugging. It won't
+     * print the internal map if its content hasn't been unparcelled.
      */
     override fun toString(): String {
         synchronized(this) {

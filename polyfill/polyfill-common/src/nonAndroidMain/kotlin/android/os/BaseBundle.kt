@@ -15,4 +15,50 @@
  */
 package android.os
 
-expect open class BaseBundle
+expect open class BaseBundle {
+    /** Constructs a new, empty Bundle. */
+    constructor()
+
+    /**
+     * Constructs a new, empty [Bundle] sized to hold the given number of elements. The [Bundle]
+     * will grow as needed.
+     *
+     * @param capacity the initial capacity of the bundle.
+     */
+    constructor(capacity: Int)
+
+    /**
+     * Constructs a [Bundle] containing a copy of the mappings from the given [Bundle].
+     *
+     * @param b the bundle to be copied.
+     */
+    constructor(b: BaseBundle)
+
+    /**
+     * Constructs a [BaseBundle] containing a copy of [from].
+     *
+     * @param from The bundle to be copied.
+     * @param deep Whether to perform a deep or shallow copy.
+     * @hide
+     */
+    constructor(from: BaseBundle, deep: Boolean)
+
+    /**
+     * Constructs a new, empty [Bundle] that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     */
+    constructor(loader: ClassLoader?)
+
+    /**
+     * Constructs a new, empty Bundle that uses a specific [ClassLoader] for instantiating
+     * [Parcelable] and [Serializable] objects.
+     *
+     * @param loader An explicit [ClassLoader] to use when instantiating objects inside of the
+     *   [Bundle].
+     * @param capacity the initial capacity of the bundle.
+     */
+    constructor(loader: ClassLoader?, capacity: Int)
+}
