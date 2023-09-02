@@ -19,7 +19,7 @@ package androidx.lifecycle
 import androidx.annotation.MainThread
 import java.io.Closeable
 import java.io.IOException
-import kotlin.concurrent.Volatile
+// import kotlin.concurrent.Volatile
 
 /**
  * ViewModel is a class that is responsible for preparing and managing the data for
@@ -101,9 +101,9 @@ import kotlin.concurrent.Volatile
  */
 public abstract class ViewModel {
     // Can't use ConcurrentHashMap, because it can lose values on old apis (see b/37042460)
-    private val mBagOfTags: MutableMap<String, Object>? = mutableMapOf()
+    private val mBagOfTags: MutableMap<String, Any>? = mutableMapOf()
     private val mCloseables: MutableSet<Closeable>? = mutableSetOf()
-    @Volatile
+    // @Volatile
     private var mCleared: Boolean = false
 
     /**
@@ -123,7 +123,7 @@ public abstract class ViewModel {
      * [ViewModelProvider.Factory].
      */
     constructor(vararg closeables: Closeable) {
-        mCloseables.addAll(closeables.asList())
+        mCloseables!!.addAll(closeables.asList())
     }
 
     /**
@@ -133,7 +133,7 @@ public abstract class ViewModel {
      * @param closeable The object that should be [Closeable.close][closed] directly before
      *                  [onCleared] is called.
      */
-    internal fun addCloseable(closeable: Closeable) {
+    open fun addCloseable(closeable: Closeable) {
         // As this method is final, it will still be called on mock objects even
         // though mCloseables won't actually be created...we'll just not do anything
         // in that case.
@@ -151,6 +151,10 @@ public abstract class ViewModel {
      * prevent a leak of this ViewModel.
      */
     protected open fun onCleared() {
+    }
+
+    internal fun invokeOnCleared() {
+        onCleared()
     }
 
     @MainThread
@@ -191,12 +195,12 @@ public abstract class ViewModel {
      * it implements [Closeable]. The same object may receive multiple close calls, so method
      * should be idempotent.
      */
-    internal open fun setTagIfAbsent<T>(key: String, newValue: T): T {
+    internal open fun <T> setTagIfAbsent(key: String, newValue: T): T {
         var previous: T
-        synchronized(mBagOfTags) {
+        synchronized(mBagOfTags!!) {
             previous = mBagOfTags.get(key) as T
             if (previous == null) {
-                mBagOfTags.put(key, newValue)
+                mBagOfTags.put(key, newValue as Any)
             }
         }
         val result = previous ?: newValue
@@ -204,7 +208,7 @@ public abstract class ViewModel {
             // It is possible that we'll call close() multiple times on the same object, but
             // Closeable interface requires close method to be idempotent:
             // "if the stream is already closed then invoking this method has no effect." (c)
-            closeWithRuntimeException(result)
+            closeWithRuntimeException(result as Any)
         }
         return result
     }
@@ -212,7 +216,7 @@ public abstract class ViewModel {
     /**
      * Returns the tag associated with this viewmodel and the specified key.
      */
-    internal open fun getTag<T>(key: String): T? {
+    internal open fun <T> getTag(key: String): T? {
         if (mBagOfTags == null) {
             return null
         }
@@ -221,7 +225,7 @@ public abstract class ViewModel {
         }
     }
 
-    private fun closeWithRuntimeException(obj: Object) {
+    private fun closeWithRuntimeException(obj: Any) {
         if (obj is Closeable) {
             try {
                 (obj as Closeable).close()
